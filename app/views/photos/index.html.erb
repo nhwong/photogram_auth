@@ -22,12 +22,29 @@
         <img src="<%= photo.image %>" width=750>
       </div>
       <div class="panel-footer">
-        <%= photo.caption %>
-        <a href="/photos/<%= photo.id %>" class="btn btn-primary">Show</a>
-        <% if current_user == photo.user then %>
-        <a href="/photos/<%= photo.id %>/edit" class="btn btn-warning">Edit</a>
-        <a href="/delete_photo/<%= photo.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
-        <% end %>
+        <h5><%= photo.caption %></h5>
+        <div class="row">
+          <a href="/photos/<%= photo.id %>" class="btn btn-primary">Show</a>
+          <% if current_user == photo.user then %>
+          <a href="/photos/<%= photo.id %>/edit" class="btn btn-warning">Edit</a>
+          <a href="/delete_photo/<%= photo.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+          <% end %>
+        </div>
+        <ul class="media-list">
+          <li class="media">
+            <div class="media-body">
+              <% photo.comments.each do |comment| %>
+              <h6 class="media-heading">
+                <%= comment.user.username %>:
+                <% from_time = ((Time.now - comment.updated_at) / 1.minute).round.minutes.ago %>
+                <%= time_ago_in_words(from_time) %> ago
+              </h6>
+              <%= comment.body %>
+              <% end %>
+            </div>
+          </li>
+        </ul>
+        </div>
       </div>
     </div>
   </div>
